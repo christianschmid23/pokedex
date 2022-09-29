@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script>
+        const API_KEY = 'szjJc6rhgmTThunTNcGT';
+        let today = new Date();
+        today.setDate(new Date().getDate() -130);
+        let startDate = today.toISOString().split('T')[0];
+        let endDate = today.toISOString().split('T')[0];
+
+        async function loadCourse() {
+            let url = `https://data.nasdaq.com/api/v3/datasets/BITFINEX/LUNAF0USTF0?start_date=${startDate}&end_date=${endDate}&api_key=${API_KEY}`;
+            let request = await fetch(url);
+            let requestAsJSON = await request.json();
+            console.log(requestAsJSON);
+            let column_names = requestAsJSON['dataset']['column_names'];
+            console.log(column_names);
+            let data = requestAsJSON['dataset']['data']['0'];
+            console.log(data);
+            let high = data['1'];
+            let container = document.getElementById('container');
+            container.innerHTML = '';
+            container.innerHTML = (1 / high);
+
+            //completeCourse(column_names, data);
+        }
+
+        function completeCourse(column_names, data) {
+            let complete = document.getElementById('complete');
+            complete.innerHTML = '';
+
+            for (let i = 0; i < column_names.length; i++) {
+                let name = column_names[i];
+                let point = data[i];
+                complete.innerHTML += /*html*/`
+                    <div>
+                        ${name}: ${point}    
+                    </div>
+                `
+
+            }
+
+        }
+    </script>
+</head>
+
+<body onload="loadCourse()">
+
+    <h1>Was kostet ein Bitcoin aktuell?</h1>
+
+    <div>Aktuell kostet ein Bitcoin <b id="container"></b> USD</div>
+
+    <div id="complete"></div>
+</body>
+
+</html>
