@@ -1,26 +1,32 @@
 let currentPokemon;
 let counter = 0;
+let Pokemon;
 
-async function loadPokemon(id) {
-    let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
-    let response = await fetch(url);
-    currentPokemon = await response.json();
-
-    console.log(`Loaded pokemon with ID${id}`, currentPokemon);
-    pokemonLite(id);
-    //renderPokemon();
-    backgroundColor();
-}
 
 function loadAllPokemon() {
-    document.getElementById('pokemonOverview').innerHTML = '';
     for (let id = 1; id <= 809; id++) {
         loadPokemon(id);
     }
 }
 
+async function loadPokemon(id) {
+    let url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    let response = await fetch(url);
+    currentPokemon = await response.json();
+    pokemonLite(id);
+}
+
+async function loadOnePokemon(id) {
+    let number = parseInt(id.replace(/\D/g, ""))
+    let url = `https://pokeapi.co/api/v2/pokemon/${number}`;
+    let response = await fetch(url);
+    Pokemon = await response.json();
+
+    renderPokemon(number);
+}
+
 function nameUppercaseFirstLetter() {
-    let name = currentPokemon['name'];
+    let name = Pokemon['name'];
     let nameUppercase = name.charAt(0).toUpperCase() + name.slice(1);
     document.getElementById('pokemonName').innerHTML = nameUppercase
 }
@@ -42,7 +48,7 @@ function pokemonLite(id) {
 
 function renderPokemonLite(id) {
     return /*html*/`
-        <div onclick="renderPokemon()" class="pokemonLite" id='pokemon${id}'>
+        <div onclick="loadOnePokemon(id)" class="pokemonLite" id='pokemon${id}'>
             <div class="cardLeft">
                 <div id="name${id}">${currentPokemon['name']}</div>
                 <div>
@@ -59,21 +65,21 @@ function renderPokemonImgLite(id) {
     document.getElementById(`Lite${id}`).src = currentPokemon['sprites']['other']['home']['front_default'];
 }
 
-function renderPokemon() {
-    renderPokemonCard();
-    renderPokemonInfo();
+function renderPokemon(number) {
+    renderPokemonCard(number);
+    renderPokemonInfo(number);
 }
 
-function renderPokemonInfo() {
-    nameUppercaseFirstLetter();
-    document.getElementById('pokemonImg').src = currentPokemon['sprites']['other']['home']['front_default'];
-    document.getElementById('pokemonId').innerHTML = ('000' + currentPokemon['id']).substr(-3);
+function renderPokemonInfo(number) {
+    nameUppercaseFirstLetter(number);
+    document.getElementById('pokemonImg').src = Pokemon['sprites']['other']['home']['front_default'];
+    document.getElementById('pokemonId').innerHTML = ('000' + Pokemon['id']).substr(-3);
 }
 
-function renderPokemonCard(id) {
+function renderPokemonCard(number) {
     document.getElementById('emptyCard').innerHTML = renderCard();
-    typeOfPokemon(id);
-    backgroundColor();
+    typeOfPokemon(number);
+    backgroundColor(number);
 }
 
 function renderCard() {
@@ -93,7 +99,7 @@ function renderCard() {
                 <div class="types" id="type2"></div>            
             </div>
         </div>
-<!--        <img class="closeRight" onclick="close()" src="./img/close.png" positon="fixed" right="50px" width="30px" height="30px" alt=""> -->
+        <img class="closeRight" onclick="clearRightSide()" src="./img/close.png" positon="fixed" right="50px" width="30px" height="30px" alt=""> 
     </div>
     <div class="infoContainer">
         <img id="pokemonImg" class="pokemonImg" width="170px" height="170px">
@@ -110,7 +116,7 @@ function renderCard() {
 `
 }
 
-function close() {
+function clearRightSide() {
     document.getElementById('emptyCard').innerHTML = '';
 }
 
@@ -122,11 +128,15 @@ function powerOff() {
     if (counter == 1) {
         right.classList.remove('d-black');
         left.classList.remove('d-black');
+        left.classList.remove('powerOff');
+        left.classList.add('powerOn');
         counter = 0;
-        loadAllPokemon();
+        loadFewPokemon();
     } else {
         right.classList.add('d-black');
         left.classList.add('d-black');
+        left.classList.remove('powerOn');
+        left.classList.add('powerOff');
         counter = 1;
     }
 }
@@ -139,10 +149,10 @@ function openSectionAbout() {
 };
 
 function renderAbout() {
-    //document.getElementById('species').innerHTML = currentPokemon[''];
-    document.getElementById('height').innerHTML = currentPokemon['height'] * 10 + `&nbsp;` + 'cm';
-    document.getElementById('weight').innerHTML = currentPokemon['weight'] + `&nbsp;` + 'kg';
-    document.getElementById('abilities').innerHTML = currentPokemon['abilities']['0']['ability']['name'] + ',' + `&nbsp;` + currentPokemon['abilities']['1']['ability']['name'];
+    //document.getElementById('species').innerHTML = Pokemon[''];
+    document.getElementById('height').innerHTML = Pokemon['height'] * 10 + `&nbsp;` + 'cm';
+    document.getElementById('weight').innerHTML = Pokemon['weight'] + `&nbsp;` + 'kg';
+    document.getElementById('abilities').innerHTML = Pokemon['abilities']['0']['ability']['name'] + ',' + `&nbsp;` + Pokemon['abilities']['1']['ability']['name'];
 }
 
 function contentSectionAbout() {
@@ -177,12 +187,12 @@ function renderStats() {
     let infoDisplay = document.getElementById('infoDisplay');
     infoDisplay.innerHTML = '';
     infoDisplay.innerHTML = contentSectionBase();
-    document.getElementById('hp').innerHTML = currentPokemon['stats']['0']['base_stat'];
-    document.getElementById('attack').innerHTML = currentPokemon['stats']['1']['base_stat'];
-    document.getElementById('defense').innerHTML = currentPokemon['stats']['2']['base_stat'];
-    document.getElementById('specialAttack').innerHTML = currentPokemon['stats']['3']['base_stat'];
-    document.getElementById('specialDefense').innerHTML = currentPokemon['stats']['4']['base_stat'];
-    document.getElementById('speed').innerHTML = currentPokemon['stats']['5']['base_stat'];
+    document.getElementById('hp').innerHTML = Pokemon['stats']['0']['base_stat'];
+    document.getElementById('attack').innerHTML = Pokemon['stats']['1']['base_stat'];
+    document.getElementById('defense').innerHTML = Pokemon['stats']['2']['base_stat'];
+    document.getElementById('specialAttack').innerHTML = Pokemon['stats']['3']['base_stat'];
+    document.getElementById('specialDefense').innerHTML = Pokemon['stats']['4']['base_stat'];
+    document.getElementById('speed').innerHTML = Pokemon['stats']['5']['base_stat'];
 }
 
 function renderBars() {
@@ -341,12 +351,12 @@ function openSectionMoves() {
 };
 
 function renderMoves() {
-    document.getElementById('move1').innerHTML = currentPokemon['moves']['0']['move']['name'];
-    document.getElementById('move2').innerHTML = currentPokemon['moves']['1']['move']['name'];
-    document.getElementById('move3').innerHTML = currentPokemon['moves']['2']['move']['name'];
-    document.getElementById('move4').innerHTML = currentPokemon['moves']['3']['move']['name'];
-    document.getElementById('move5').innerHTML = currentPokemon['moves']['4']['move']['name'];
-    document.getElementById('move6').innerHTML = currentPokemon['moves']['5']['move']['name'];
+    document.getElementById('move1').innerHTML = Pokemon['moves']['0']['move']['name'];
+    document.getElementById('move2').innerHTML = Pokemon['moves']['1']['move']['name'];
+    document.getElementById('move3').innerHTML = Pokemon['moves']['2']['move']['name'];
+    document.getElementById('move4').innerHTML = Pokemon['moves']['3']['move']['name'];
+    document.getElementById('move5').innerHTML = Pokemon['moves']['4']['move']['name'];
+    document.getElementById('move6').innerHTML = Pokemon['moves']['5']['move']['name'];
 }
 
 function contentSectionMoves() {
@@ -381,27 +391,27 @@ function contentSectionMoves() {
 };
 
 /*function barRight() {
-    if (document.getElementById('tableAbout') === true) {
+    if (document.getElementById('infoDisplay').innerHTML == 'tableAbout') {
         openSectionBase();
     }
 
-    if (document.getElementById('tableBase') === true) {
+    if (document.getElementById('infoDisplay').innerHTML == 'tableBase') {
         openSectionMoves();
     }
-    if (document.getElementById('tableMoves') === true) {
+    if (document.getElementById('infoDisplay').innerHTML == 'tableMoves') {
         openSectionAbout();
     }
 }*/
 
 function typeOfPokemon() {
-    let types = currentPokemon['types'];
+    let types = Pokemon['types'];
     if (types.length == 1) {
         document.getElementById('type2').classList.add('d-none');
-        document.getElementById('type1').innerHTML = currentPokemon['types']['0']['type']['name'];
+        document.getElementById('type1').innerHTML = Pokemon['types']['0']['type']['name'];
     } else {
-        document.getElementById('type1').innerHTML = currentPokemon['types']['0']['type']['name'];
+        document.getElementById('type1').innerHTML = Pokemon['types']['0']['type']['name'];
         document.getElementById('type2').classList.remove('d-none');
-        document.getElementById('type2').innerHTML = currentPokemon['types']['1']['type']['name'];
+        document.getElementById('type2').innerHTML = Pokemon['types']['1']['type']['name'];
     }
 };
 
@@ -420,53 +430,37 @@ function typeOfPokemonLite(id) {
 function backgroundColor() {
     if (document.getElementById(`type1`).innerHTML == 'grass') {
         document.getElementById('pokedex').classList.add('b-grass');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'water') {
+    } else if (document.getElementById(`type1`).innerHTML == 'water') {
         document.getElementById('pokedex').classList.add('b-water');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'fire') {
+    } else if (document.getElementById(`type1`).innerHTML == 'fire') {
         document.getElementById('pokedex').classList.add('b-fire');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'bug') {
+    } else if (document.getElementById(`type1`).innerHTML == 'bug') {
         document.getElementById('pokedex').classList.add('b-bug');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'normal') {
+    } else if (document.getElementById(`type1`).innerHTML == 'normal') {
         document.getElementById('pokedex').classList.add('b-normal');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'poisen') {
+    } else if (document.getElementById(`type1`).innerHTML == 'poisen') {
         document.getElementById('pokedex').classList.add('b-poisen');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'electric') {
+    } else if (document.getElementById(`type1`).innerHTML == 'electric') {
         document.getElementById('pokedex').classList.add('b-electric');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'ground') {
+    } else if (document.getElementById(`type1`).innerHTML == 'ground') {
         document.getElementById('pokedex').classList.add('b-ground');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'fairy') {
+    } else if (document.getElementById(`type1`).innerHTML == 'fairy') {
         document.getElementById('pokedex').classList.add('b-fairy');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'fighting') {
+    } else if (document.getElementById(`type1`).innerHTML == 'fighting') {
         document.getElementById('pokedex').classList.add('b-fighting');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'psychic') {
+    } else if (document.getElementById(`type1`).innerHTML == 'psychic') {
         document.getElementById('pokedex').classList.add('b-psychic');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'rock') {
+    } else if (document.getElementById(`type1`).innerHTML == 'rock') {
         document.getElementById('pokedex').classList.add('b-rock');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'ghost') {
+    } else if (document.getElementById(`type1`).innerHTML == 'ghost') {
         document.getElementById('pokedex').classList.add('b-ghost');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'ice') {
+    } else if (document.getElementById(`type1`).innerHTML == 'ice') {
         document.getElementById('pokedex').classList.add('b-ice');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'dragon') {
+    } else if (document.getElementById(`type1`).innerHTML == 'dragon') {
         document.getElementById('pokedex').classList.add('b-dragon');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'dark') {
+    } else if (document.getElementById(`type1`).innerHTML == 'dark') {
         document.getElementById('pokedex').classList.add('b-dark');
-    }
-    if (document.getElementById(`type1`).innerHTML == 'steel') {
+    } else {
         document.getElementById('pokedex').classList.add('b-steel');
     }
 }
@@ -474,53 +468,37 @@ function backgroundColor() {
 function backgroundColorLite(id) {
     if (document.getElementById(`type1.${id}`).innerHTML == 'grass') {
         document.getElementById(`pokemon${id}`).classList.add('b-grass');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'water') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'water') {
         document.getElementById(`pokemon${id}`).classList.add('b-water');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'fire') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'fire') {
         document.getElementById(`pokemon${id}`).classList.add('b-fire');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'bug') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'bug') {
         document.getElementById(`pokemon${id}`).classList.add('b-bug');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'normal') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'normal') {
         document.getElementById(`pokemon${id}`).classList.add('b-normal');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'poisen') {
-        document.getElementById(`pokemon${id}`).classList.add('b-poisen');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'electric') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'poison') {
+        document.getElementById(`pokemon${id}`).classList.add('b-poison');
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'electric') {
         document.getElementById(`pokemon${id}`).classList.add('b-electric');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'ground') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'ground') {
         document.getElementById(`pokemon${id}`).classList.add('b-ground');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'fairy') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'fairy') {
         document.getElementById(`pokemon${id}`).classList.add('b-fairy');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'fighting') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'fighting') {
         document.getElementById(`pokemon${id}`).classList.add('b-fighting');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'psychic') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'psychic') {
         document.getElementById(`pokemon${id}`).classList.add('b-psychic');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'rock') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'rock') {
         document.getElementById(`pokemon${id}`).classList.add('b-rock');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'ghost') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'ghost') {
         document.getElementById(`pokemon${id}`).classList.add('b-ghost');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'ice') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'ice') {
         document.getElementById(`pokemon${id}`).classList.add('b-ice');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'dragon') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'dragon') {
         document.getElementById(`pokemon${id}`).classList.add('b-dragon');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'dark') {
+    } else if (document.getElementById(`type1.${id}`).innerHTML == 'dark') {
         document.getElementById(`pokemon${id}`).classList.add('b-dark');
-    }
-    if (document.getElementById(`type1.${id}`).innerHTML == 'steel') {
+    } else {
         document.getElementById(`pokemon${id}`).classList.add('b-steel');
     }
 }
