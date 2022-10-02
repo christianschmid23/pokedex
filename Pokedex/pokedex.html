@@ -15,21 +15,22 @@
 
     <title>Pokedex</title>
 
-    <script src="./scriptOk.js"></script>
+    <script src="./script.js"></script>
+<!--   <script src="./scriptOk.js"></script> --> 
 
 </head>
 
-<body onload="loadPokemon()" position="relative">
-    <div class="pokedexOverview">
-        <div id="pokemonOverview">
+<body onload="loadFewPokemon()" position="relative">
+    <div class="pokedexOverview" id="pokedexOverview">
+        <div id="pokemonOverview" class="pokemonOverview">
 
         </div>
     </div>
-    <div class="pokedexOverviewChild">
-        <div id="emptyCard"></div>
+    <div class="pokedexOverviewChild" id="pokedexOverviewChild">
+        <div id="emptyCard" class="emptyCard"></div>
         <img class="speaker" src="./img/speaker.png" alt="" srcset="">
         <div class="courser">
-            <!--    <img class="courser1" onclick="lastPokemon()" src="./img/triangle.png" alt="">
+<!--            <img class="courser1" onclick="lastPokemon()" src="./img/triangle.png" alt="">
             <img class="courser2" onclick="barRight()" src="./img/triangle.png" alt="">
             <img class="courser3" onclick="nextPokemon()" src="./img/triangle.png" alt="">
             <img class="courser4" onclick="barLeft()" src="./img/triangle.png" alt=""> -->

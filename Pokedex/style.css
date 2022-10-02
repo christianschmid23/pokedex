@@ -5,6 +5,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image:url(img/forest.jpg)
 }
 
 .pokedexOverview {
@@ -13,6 +14,7 @@ width: 40vw;
 background-color: #e70101;
 border-radius: 50px;
 border: 4px solid black;
+position: relative;
 }
 
 .pokedexOverviewChild {
@@ -29,34 +31,54 @@ position: relative;
     width: 1012px;
 }
 
-#pokemonOverview {
+.pokemonOverview {
     height: 86vh;
     width: 31vw;
+    padding-bottom: 10px;
     position: fixed;
     left: 14%;
-    top: 7%;
+    top: 6%;
     border: 2px solid black;
     background-color: white;
     border-radius: 30px;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
     display: flex;
     justify-content: space-around;
-    flex-flow: wrap;
+    align-items: center;
+    overflow-y: scroll;
+    flex-wrap: wrap;
+    position: absolute;
+}
+
+.pokemonOverview_Child {
+    height: 81vh;
+    overflow-y: scroll;
+    width: 100%;
+    display: flex;
+    
+    justify-content: space-around;
+}
+
+.nextPokemon {
+    margin: 10px;
+    width: fit-content;
 }
 
 .pokemonLite {
     width: 13vw;
     height: 18vh;
-    margin-top: 5px;
+    margin-top: 10px;
     border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 5px;
-    background-color: #FB6C6C;
+    color: white;
 }
 
-#emptyCard {
-    height: 71%;
+.emptyCard {
+    height: 71vh;
     width: 31vw;
     background-color: white;
     position: fixed;
@@ -81,10 +103,9 @@ position: relative;
     background-color: white;
 }
 
-#pokedex {
+.pokedex {
     border-radius: 50px;
     min-height: 50vh;
-    background-color: #FB6C6C;
     color: white;
     display: flex;
     padding: 24px;
@@ -105,7 +126,7 @@ position: relative;
     width: 100%;
 }
 
-#pokemonImg {
+.pokemonImg {
     margin-top: -140px;
 }
 
@@ -123,6 +144,16 @@ position: relative;
     flex-direction: column;
     border: 2px solid black;
     border-top: none !important;
+}
+
+.height0 {
+    height: 0;
+    border: none;
+}
+
+.underline {
+    border-bottom: 2px solid;
+    border-color: #FB6C6C !important;
 }
 
 .bar {
@@ -148,7 +179,16 @@ position: relative;
     display: flex;
 }
 
-#infoDisplay {
+.columnCenter {
+    flex-direction: column;
+    align-items: center;
+}
+
+.justifyCenter {
+    justify-content: center;
+}
+
+.infoDisplay {
     margin-top: -305px;
     padding: 22px;
     padding-top: 15px !important;
@@ -222,6 +262,19 @@ td {
     left: 38%;
 }
 
+.power:hover {
+    cursor: pointer;
+}
+
+.powerOn {
+    overflow-y: scroll;
+    }
+    
+    .powerOff {
+    overflow-y:hidden;    
+    }
+    
+
 .statBar {
     height: 5px;
     width: 15vw;
@@ -241,9 +294,232 @@ td {
     width: fit-content;
     border: 1px solid white;
     border-radius: 10px;
-    color: white;
+    background-color: rgba(253, 253, 253, 0.2);
 }
 
 .d-none {
     display: none;
+}
+
+.d-block {
+    display: block !important;
+}
+
+.cardLeft {
+    height: 78%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.grass {
+    background-color: rgb(35, 175, 7) ;
+}
+
+.water {
+    background-color: rgb(32, 96, 192) ;
+}
+
+.fire {
+    background-color: rgb(250, 74, 74) ;
+}
+
+.bug {
+    background-color: rgb(19, 102, 2) ;
+}
+
+.normal {
+    background-color: rgb(179, 149, 129) ;
+}
+
+.poison {
+    background-color: rgb(155, 50, 129) ;
+}
+
+.electric {
+    background-color: rgb(241, 245, 21) ;
+}
+
+.ground {
+    background-color: rgb(151, 69, 30) ;
+}
+
+.fairy {
+    background-color: rgb(238, 91, 206) ;
+}
+
+.fighting {
+    background-color: rgb(212, 100, 35) ;
+}
+
+.psychic {
+    background-color: rgb(195, 124, 236) ;
+}
+
+.rock {
+    background-color: rgb(107, 101, 101) ;
+}
+
+.ghost {
+    background-color: rgba(142, 143, 145, 0.555) ;
+}
+
+.ice {
+    background-color: rgb(3, 179, 248) ;
+}
+
+.dragon {
+    background-color: rgb(245, 1, 103) ;
+}
+
+.dark {
+    background-color: rgb(107, 57, 99) ;
+}
+
+.steel {
+    background-color: rgb(184, 184, 184) ;
+}
+
+@media (max-width: 1225px) {
+    .pokedexOverviewChild {
+        display: none;
+    }
+    .pokedexOverview {
+        width: 80vw;
+    }
+    .pokemonOverview {
+        width: 70vw;
+        margin-left: -5vw;
+    }
+    .pokemonLite {
+        width: 30%;
+    }
+    .pokedexOverviewChild {
+        width: 80%;
+        position: relative;
+    }
+    .emptyCard {
+        width: 78%;
+        position: absolute;
+    }
+    .card {
+        width: 67vw;
+        height: 578px;
+    }
+    .speaker {
+        display: none;
+    }
+    .courser {
+        display: none;
+    }
+    .pokemonImg {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+@media (max-width: 1000px) {
+    .pokedexOverviewChild {
+        display: none;
+    }
+    .pokedexOverview {
+        width: 80%;
+    }
+    .pokemonOverview {
+        width: 90%;
+        margin-left: -10%;
+    }
+    .pokemonLite {
+        display: flex;
+        flex-direction: column-reverse;
+        height: 46%;
+        text-align: center;
+    }
+    .pokedexOverviewChild {
+        width: 80%;
+        position: relative;
+    }
+    .emptyCard {
+        width: 78%;
+        position: absolute;
+    }
+    .card {
+        width: 67vw;
+        height: 578px;
+    }
+    .speaker {
+        display: none;
+    }
+    .courser {
+        display: none;
+    }
+    .pokemonImg {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+@media (max-width: 750px) {
+    .pokedexOverviewChild {
+        display: none;
+    }
+    .pokedexOverview {
+        width: 80%;
+    }
+    .pokemonOverview {
+        width: 90%;
+        margin-left: -10%;
+    }
+    .pokemonLite {
+        display: flex;
+        flex-direction: column-reverse;
+        height: 52%;
+        width: 80%;
+        text-align: center;
+    }
+    .infoContainer {
+        margin-top: -180px !important;
+        height: 86% !important;
+    }
+    .pokemonImg {
+        width: 150px;
+        height: 150px;
+    }
+    .infoDisplay {
+        margin-top: -365px;
+    }
+    .card {
+        height: 472px;
+    }
+}
+
+@media (max-width: 350px) {
+    .pokedexOverviewChild {
+        display: none;
+    }
+    .pokedexOverview {
+        width: 80%;
+    }
+    .pokemonOverview {
+        width: 90%;
+        margin-left: -10%;
+    }
+    .pokemonLite {
+        display: flex;
+        flex-direction: column-reverse;
+        height: 46%;
+        width: 80%;
+        text-align: center;
+    }
+    .infoDisplay {
+        margin-top: -350px;
+    }
+    td {
+        height: 15px;
+    }
+}
+
+@media (max-height: 680px) {
+    td {
+        height: 25px;
+    }
 }
