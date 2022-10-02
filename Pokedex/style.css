@@ -473,6 +473,40 @@ td {
         display: flex;
         flex-direction: column-reverse;
         height: 52%;
+        width: 40%;
+        text-align: center;
+    }
+    .infoContainer {
+        margin-top: -180px !important;
+        height: 86% !important;
+    }
+    .pokemonImg {
+        width: 150px;
+        height: 150px;
+    }
+    .infoDisplay {
+        margin-top: -365px;
+    }
+    .card {
+        height: 472px;
+    }
+}
+
+@media (max-width: 550px) {
+    .pokedexOverviewChild {
+        display: none;
+    }
+    .pokedexOverview {
+        width: 80%;
+    }
+    .pokemonOverview {
+        width: 90%;
+        margin-left: -10%;
+    }
+    .pokemonLite {
+        display: flex;
+        flex-direction: column-reverse;
+        height: 52%;
         width: 80%;
         text-align: center;
     }
